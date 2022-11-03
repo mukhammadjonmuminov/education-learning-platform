@@ -1,8 +1,11 @@
 from .models import Courses
+from django.apps import apps
 from .forms import ModuleFormSet
+from .models import Modul, Content
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic.list import ListView
+from django.forms.models import modelform_factory
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -33,6 +36,19 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
         return self.render_to_response({
             'course': self.course, 'formset': formset
         })
+
+class CourseCreateUpdate(TemplateResponseMixin, View):
+    module = None
+    model = None
+    obj = None
+    template_name = 'courses/manage/content/form.html'
+
+    def get_model(self, model_name):
+        if model_name in ['text', 'video', 'image', 'file']:
+            return apps.get_model(app_label='courses', model_name=model_name)
+        return None
+    pass
+    # def get_form(self, ):
 
 class OwnerMixin:
     def get_queryset(self):

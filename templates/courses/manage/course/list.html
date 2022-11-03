@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block title %}My course {% endblock %}
+
+{% block content %}
+    <h1>My Courses</h1>
+    <div class="module">
+        {% for course in object_list %}
+            <div class="course_info">
+                <h3>{{ course.title }}</h3>
+                <p>
+                    <a href="{% url 'course_edit' course.id %}">Edit</a>
+                    <a href="{% url 'course_delete' course.id %}">Delete</a>
+                    <a href="{% url 'course_module_update' course.id %}"></a>
+                </p>
+            </div>
+        {% empty %}
+            <p>Ypi haven't created any course yet.</p>
+        {% endfor %}
+        <p>
+            <a href="{% url 'course_create' %}" class="button">Create new course</a>
+        </p>
+    </div>
+{% endblock %}
+
